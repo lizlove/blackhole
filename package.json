@@ -1,0 +1,21 @@
+{
+  "name": "cs-blackhole",
+  "version": "1.0.0",
+  "description": "Black hole visualization demonstrating impact of Chern-Simons gravity.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "private": true,
+  "keywords": [
+    "black",
+    "hole",
+    "visualization",
+    "three.js"
+  ],
+  "author": "lizlove",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "three": "^0.129.0"
+  }
+}
