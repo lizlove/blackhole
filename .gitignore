@@ -4,3 +4,7 @@ package-lock.json
 
 .env
 .DS_Store
+*.log
+.vscode
+.cache
+.eslintcache

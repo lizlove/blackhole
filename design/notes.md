@@ -20,3 +20,17 @@ rotation turns on
 fluid moves to the top.
 light blue wavy fluid
 
+
+
+
+
+4 elements needed for three:
+  1. A scene that will contain objects
+  2. Some objects
+  3. A camera
+  4. A renderer
+
+Mesh is the combination of a geometry (the shape) and a material (how it looks).
+
+<!-- For BH final: can use 2 cameras to show the the top-down and the side view. only have to build once :) -->
+You can have multiple cameras just like on a movie set, and you can switch between those cameras as you please. Usually, we only use one camera.
