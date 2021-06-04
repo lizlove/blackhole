@@ -56,7 +56,21 @@ We will not cover how quaternions work in this lesson but keep in mind that the 
 
 ## Sketch
 
-1. Background color, axis
-2. Objects: event horizon, ergosphere, lightcones
-3. Event horizon rotation, lightcones rotation
-4. Event horizon color gradient
+- Objects: event horizon, ergosphere, lightcones
+- Event horizon rotation, lightcones rotation
+- Event horizon color gradient
+- Lightcone color fade/gradient
+- Fluid static
+- Fluid movement
+- Lightsaber
+- Labels
+- Group items for scaling
+- Camera movement over time.
+- Music
+
+
+## Vignette 1:
+<!-- const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
+camera.position.z = 0;
+camera.position.y = 4;
+camera.position.x = 0; -->
