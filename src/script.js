@@ -15,12 +15,16 @@ const axesHelper = new THREE.AxesHelper(3);
 scene.add(axesHelper);
 
 // Objects
-const material = new THREE.MeshBasicMaterial({color: '#F8FEC5'});
+const materialSphere = new THREE.MeshBasicMaterial({color: 'red', wireframe: true});
 const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(0.5, 16, 16),
-    material,
+    new THREE.SphereGeometry(1, 32, 32),
+    materialSphere,
 );
-scene.add(sphere);
+
+const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4', wireframe: true});
+const ergosphere = new THREE.Mesh( new THREE.RingGeometry(1, 2, 32), materialErgo);
+
+scene.add(sphere, ergosphere);
 
 // Lights
 // const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -61,6 +65,7 @@ const tick = () => {
 
   // Update objects
   sphere.rotation.y = 0.1 * elapsedTime;
+  ergosphere.rotation.x = 0.1 * elapsedTime;
 
   // Update controls
   controls.update();
@@ -91,5 +96,11 @@ window.addEventListener('resize', () => {
 });
 
 // Debug
-// const gui = new dat.GUI();
-// gui.add(material, 'metalness').min(0).max(1).step(0.0001);
+const gui = new dat.GUI();
+// gui.add(ergosphere, 'innerRadius').min(0).max(1).step(0.0001);
+gui.add(ergosphere, 'innerRadius');
+gui.add(ergosphere, 'outerRadius');
+gui.add(ergosphere, 'thetaSegments');
+gui.add(ergosphere, 'phiSegments');
+gui.add(ergosphere, 'thetaStart');
+gui.add(ergosphere, 'thetaLength');
