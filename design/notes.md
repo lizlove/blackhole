@@ -29,7 +29,7 @@ You can have multiple cameras just like on a movie set, and you can switch betwe
 
 Object3D instances have an excellent method named lookAt(...) that lets you ask an object to look at something. The object will automatically rotate its -z axis toward the target you provided. No complicated maths needed. You can use it to rotate the camera toward an object, orientate a cannon to face an enemy, or move the character's eyes to an object.The parameter is the target and must be a Vector3.
 
- I usually use a field of view between 45 and 75.
+I usually use a field of view between 45 and 75.
 
 ### Object Transformation
 There are 4 properties to transform objects in our scene:
