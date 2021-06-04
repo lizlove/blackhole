@@ -52,3 +52,11 @@ The quaternion property also expresses a rotation, but in a more mathematical wa
 
 We will not cover how quaternions work in this lesson but keep in mind that the quaternion updates when you change the rotation. This means that you can use any one of the two as you please.
 
+
+
+## Sketch
+
+1. Background color, axis
+2. Objects: event horizon, ergosphere, lightcones
+3. Event horizon rotation, lightcones rotation
+4. Event horizon color gradient
