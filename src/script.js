@@ -22,8 +22,8 @@ const sphere = new THREE.Mesh(
 );
 
 const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4', wireframe: true});
-const ergosphere = new THREE.Mesh( new THREE.RingGeometry(1, 2, 32), materialErgo);
-
+const ergosphere = new THREE.Mesh( new THREE.RingGeometry(1.95, 2, 32), materialErgo);
+ergosphere.rotation.x = Math.PI * 0.5;
 scene.add(sphere, ergosphere);
 
 // Lights
@@ -43,8 +43,9 @@ const sizes = {
 
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-camera.position.z = 3;
-camera.position.y = .25;
+camera.position.z = 0;
+camera.position.y = 4;
+camera.position.x = 0;
 scene.add(camera);
 
 // Controls
@@ -65,7 +66,6 @@ const tick = () => {
 
   // Update objects
   sphere.rotation.y = 0.1 * elapsedTime;
-  ergosphere.rotation.x = 0.1 * elapsedTime;
 
   // Update controls
   controls.update();
@@ -96,11 +96,8 @@ window.addEventListener('resize', () => {
 });
 
 // Debug
-const gui = new dat.GUI();
-// gui.add(ergosphere, 'innerRadius').min(0).max(1).step(0.0001);
-gui.add(ergosphere, 'innerRadius');
-gui.add(ergosphere, 'outerRadius');
-gui.add(ergosphere, 'thetaSegments');
-gui.add(ergosphere, 'phiSegments');
-gui.add(ergosphere, 'thetaStart');
-gui.add(ergosphere, 'thetaLength');
+// const gui = new dat.GUI();
+// console.log(ergosphere);
+// gui.add(ergosphere, 'geometry.position').min(0).max(5).step(0.0001).name('x');
+// // gui.add(ergosphere, 'geometry.position.y').min(0).max(5).step(0.0001).name('y');
+// // gui.add(ergosphere, 'geometry.position.z').min(0).max(5).step(0.0001).name('z');
