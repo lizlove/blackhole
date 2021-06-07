@@ -8,7 +8,7 @@
     "lint": "eslint ./src/**.js --fix",
     "start": "npm run lint && npm run dev"
   },
-  "private": true,
+  "private": false,
   "keywords": [
     "black",
     "hole",
