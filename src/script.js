@@ -14,6 +14,8 @@ scene.background = new THREE.Color('#0D0E22');
 const axesHelper = new THREE.AxesHelper(3);
 scene.add(axesHelper);
 
+// Texture - TODO
+
 // Objects
 const materialSphere = new THREE.MeshBasicMaterial({color: 'red', wireframe: true});
 const sphere = new THREE.Mesh(
@@ -25,12 +27,27 @@ const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4'});
 const ergosphere = new THREE.Mesh( new THREE.TorusGeometry(2.75, .01, 45, 45), materialErgo);
 ergosphere.rotation.x = Math.PI * 0.5;
 
+// Lightcone Group
+const lightconeGroup = new THREE.Group();
+
 const materialLightcone = new THREE.MeshBasicMaterial({color: '#F2FF77', wireframe: true});
-const lightCone = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
-lightCone.rotation.x = Math.PI * 0.5;
-lightCone.rotation.z = Math.PI * 1;
-lightCone.position.x = 2.75;
-scene.add(sphere, ergosphere, lightCone);
+const lightCone1 = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
+lightCone1.rotation.x = Math.PI * 0.5;
+lightCone1.rotation.z = Math.PI * 1;
+lightCone1.position.x = 2.75;
+lightconeGroup.add(lightCone1);
+
+const lightCone2 = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
+lightCone2.rotation.x = Math.PI * 0.5;
+lightCone2.position.x = -2.75;
+lightconeGroup.add(lightCone2);
+
+const lightCone3 = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
+lightCone3.rotation.z = Math.PI * 1.5;
+lightCone3.position.z = 2.75;
+lightconeGroup.add(lightCone3);
+
+scene.add(sphere, ergosphere, lightconeGroup);
 
 // Lights
 // const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -72,10 +89,10 @@ const tick = () => {
 
   // Update objects
   sphere.rotation.y = 0.2 * elapsedTime;
-  lightCone.position.x = Math.sin(0.2 * elapsedTime) * 2.75;
-  lightCone.position.z = Math.cos(0.2 * elapsedTime) * 2.75;
-  console.log(lightCone.position);
-  // lightCone.rotation.z = 1 * elapsedTime;
+  // lightConeGroup.position.x = Math.sin(0.2 * elapsedTime) * 2.75;
+  // lightConeGroup.position.z = Math.cos(0.2 * elapsedTime) * 2.75;
+  // lightConeGroup.rotation.y = Math.PI + (0.2 * elapsedTime);
+  // TODO: fix lightcone adjustment
 
   // Update controls
   controls.update();
