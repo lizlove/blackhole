@@ -33,3 +33,11 @@ h1.title {
   font-weight: 100;
   letter-spacing: 0;
 }
+audio {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 20px;
+  z-index: 10000;
+  color: #D8D8D8;
+}
