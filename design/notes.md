@@ -52,3 +52,27 @@ The quaternion property also expresses a rotation, but in a more mathematical wa
 
 We will not cover how quaternions work in this lesson but keep in mind that the quaternion updates when you change the rotation. This means that you can use any one of the two as you please.
 
+
+
+## TODO:
+- Lightcones rotation
+- Event horizon color gradient
+- Lightcone color fade/gradient
+- Fluid static
+- Fluid movement
+- Lightsaber
+- Labels
+- Group items for scaling
+- Camera movement over time.
+- Music
+
+
+## Done
+- Objects: event horizon, ergosphere, lightcones
+- Event horizon rotation,
+
+## Vignette 1:
+<!-- const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
+camera.position.z = 0;
+camera.position.y = 4;
+camera.position.x = 0; -->
