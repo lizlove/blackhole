@@ -12,6 +12,7 @@
     },
     "rules": {
         "max-len": "warn",
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "require-jsdoc": "warn"
     }
 }

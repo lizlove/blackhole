@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import * as dat from 'dat.gui';
 
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
 
@@ -32,19 +33,15 @@ const lightconeGroup = new THREE.Group();
 
 const materialLightcone = new THREE.MeshBasicMaterial({color: '#F2FF77', wireframe: true});
 const lightCone1 = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
-lightCone1.rotation.x = Math.PI * 0.5;
-lightCone1.rotation.z = Math.PI * 1;
-lightCone1.position.x = 2.75;
+// lightCone1.rotation.x = Math.PI * 0.5;
+// lightCone1.rotation.z = Math.PI * 1;
+// lightCone1.position.x = 2.75;
 lightconeGroup.add(lightCone1);
 
 const lightCone2 = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
-lightCone2.rotation.x = Math.PI * 0.5;
-lightCone2.position.x = -2.75;
 lightconeGroup.add(lightCone2);
 
 const lightCone3 = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
-lightCone3.rotation.z = Math.PI * 1.5;
-lightCone3.position.z = 2.75;
 lightconeGroup.add(lightCone3);
 
 scene.add(sphere, ergosphere, lightconeGroup);
@@ -84,15 +81,16 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Animate
 const clock = new THREE.Clock();
+const randArr = ['a', 'b', 'c'].map((r) => Math.floor(Math.random() * 360));
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
-
   // Update objects
   sphere.rotation.y = 0.2 * elapsedTime;
-  // lightConeGroup.position.x = Math.sin(0.2 * elapsedTime) * 2.75;
-  // lightConeGroup.position.z = Math.cos(0.2 * elapsedTime) * 2.75;
-  // lightConeGroup.rotation.y = Math.PI + (0.2 * elapsedTime);
-  // TODO: fix lightcone adjustment
+  lightconeGroup.children.forEach((child, index) => {
+    // TODO: Add rotation for cones
+    child.position.x = Math.sin(0.2 * (elapsedTime + randArr[index])) * 2.75;
+    child.position.z = Math.cos(0.2 * (elapsedTime + randArr[index])) * 2.75;
+  });
 
   // Update controls
   controls.update();
