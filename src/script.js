@@ -25,11 +25,11 @@ const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4'});
 const ergosphere = new THREE.Mesh( new THREE.TorusGeometry(2.75, .01, 45, 45), materialErgo);
 ergosphere.rotation.x = Math.PI * 0.5;
 
-const materialLightcone = new THREE.MeshBasicMaterial({color: '#F2FF77'});
+const materialLightcone = new THREE.MeshBasicMaterial({color: '#F2FF77', wireframe: true});
 const lightCone = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
 lightCone.rotation.x = Math.PI * 0.5;
 lightCone.rotation.z = Math.PI * 1;
-// lightCone.position.x = -2.75;
+lightCone.position.x = 2.75;
 scene.add(sphere, ergosphere, lightCone);
 
 // Lights
@@ -72,8 +72,9 @@ const tick = () => {
 
   // Update objects
   sphere.rotation.y = 0.2 * elapsedTime;
-  lightCone.position.x = Math.sin( 0.2 * elapsedTime);
-  lightCone.position.z = Math.cos( 0.2 * elapsedTime);
+  lightCone.position.x = Math.sin(0.2 * elapsedTime) * 2.75;
+  lightCone.position.z = Math.cos(0.2 * elapsedTime) * 2.75;
+  console.log(lightCone.position);
   // lightCone.rotation.z = 1 * elapsedTime;
 
   // Update controls
