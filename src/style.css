@@ -16,13 +16,20 @@ body {
   left: 0;
   outline: none;
 }
-h1.title {
+header {
   position: fixed;
   top: 0;
   left: 0;
   padding: 20px;
   z-index: 10000;
   color: #D8D8D8;
+}
+h1.title {
   font-weight: 400;
-  letter-spacing: -1;
+  letter-spacing: -1px;
+  margin-bottom: .75rem;
+}
+.subtitle {
+  font-weight: 100;
+  letter-spacing: 0;
 }

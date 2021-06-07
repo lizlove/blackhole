@@ -90,7 +90,6 @@ const tick = () => {
     child.position.x = Math.sin(0.2 * (elapsedTime + randArr[index])) * 2.75;
     child.position.z = Math.cos(0.2 * (elapsedTime + randArr[index])) * 2.75;
   });
-
   // Update controls
   controls.update();
 
