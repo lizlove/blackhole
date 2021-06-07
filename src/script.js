@@ -30,18 +30,15 @@ ergosphere.rotation.x = Math.PI * 0.5;
 
 // Lightcone Group
 const lightconeGroup = new THREE.Group();
-
 const materialLightcone = new THREE.MeshBasicMaterial({color: '#F2FF77', wireframe: true});
-const lightCone1 = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
-// lightCone1.rotation.x = Math.PI * 0.5;
-// lightCone1.rotation.z = Math.PI * 1;
-// lightCone1.position.x = 2.75;
+
+const lightCone1 = new THREE.Mesh( new THREE.ConeGeometry(.10, .35, 30), materialLightcone);
 lightconeGroup.add(lightCone1);
 
-const lightCone2 = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
+const lightCone2 = new THREE.Mesh( new THREE.ConeGeometry(.10, .35, 30), materialLightcone);
 lightconeGroup.add(lightCone2);
 
-const lightCone3 = new THREE.Mesh( new THREE.ConeGeometry(.25, .5, 30), materialLightcone);
+const lightCone3 = new THREE.Mesh( new THREE.ConeGeometry(.10, .35, 30), materialLightcone);
 lightconeGroup.add(lightCone3);
 
 scene.add(sphere, ergosphere, lightconeGroup);
@@ -87,7 +84,9 @@ const tick = () => {
   // Update objects
   sphere.rotation.y = 0.2 * elapsedTime;
   lightconeGroup.children.forEach((child, index) => {
-    // TODO: Add rotation for cones
+    // TODO: Add rotation for cones see prior example
+    // lightCone1.rotation.x = Math.PI * 0.5;
+    // lightCone1.rotation.z = Math.PI * 1;
     child.position.x = Math.sin(0.2 * (elapsedTime + randArr[index])) * 2.75;
     child.position.z = Math.cos(0.2 * (elapsedTime + randArr[index])) * 2.75;
   });
