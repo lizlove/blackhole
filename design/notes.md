@@ -55,7 +55,7 @@ We will not cover how quaternions work in this lesson but keep in mind that the 
 
 
 ## TODO:
-- Lightcones rotation
+- Lightcones rotation direction
 - Event horizon color gradient
 - Lightcone color fade/gradient
 - Fluid static
