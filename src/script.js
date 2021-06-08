@@ -4,6 +4,9 @@ import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import * as dat from 'dat.gui';
 
 
+// Debug
+const gui = new dat.GUI();
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
 
@@ -15,14 +18,25 @@ scene.background = new THREE.Color('#0D0E22');
 const axesHelper = new THREE.AxesHelper(3);
 scene.add(axesHelper);
 
-// Texture - TODO
+// Texture
+const textureLoader = new THREE.TextureLoader();
+const matcapTexture = textureLoader.load('/textures/matcaps/9.png');
+const lightconeTexture = textureLoader.load('/textures/matcaps/11.png');
 
 // Objects
-const materialSphere = new THREE.MeshBasicMaterial({color: 'red', wireframe: true});
+const materialSphere = new THREE.MeshBasicMaterial({color: 'black', wireframe: false});
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(1, 32, 32),
     materialSphere,
 );
+
+// Event Horizon with matcap
+const materialEvHorz = new THREE.MeshMatcapMaterial({matcap: matcapTexture});
+const eventHorizon = new THREE.Mesh(
+    new THREE.TorusGeometry(1.05, .05, 45, 45),
+    materialEvHorz,
+);
+eventHorizon.rotation.x = Math.PI * 0.5;
 
 const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4'});
 const ergosphere = new THREE.Mesh( new THREE.TorusGeometry(2.75, .01, 45, 45), materialErgo);
@@ -30,7 +44,7 @@ ergosphere.rotation.x = Math.PI * 0.5;
 
 // Lightcone Group
 const lightconeGroup = new THREE.Group();
-const materialLightcone = new THREE.MeshBasicMaterial({color: '#F2FF77', wireframe: true});
+const materialLightcone = new THREE.MeshMatcapMaterial({matcap: lightconeTexture});
 
 const lightCone1 = new THREE.Mesh( new THREE.ConeGeometry(.10, .35, 30), materialLightcone);
 lightconeGroup.add(lightCone1);
@@ -41,7 +55,7 @@ lightconeGroup.add(lightCone2);
 const lightCone3 = new THREE.Mesh( new THREE.ConeGeometry(.10, .35, 30), materialLightcone);
 lightconeGroup.add(lightCone3);
 
-scene.add(sphere, ergosphere, lightconeGroup);
+scene.add(sphere, eventHorizon, ergosphere, lightconeGroup);
 
 // Lights
 // const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -83,6 +97,7 @@ const tick = () => {
   const elapsedTime = clock.getElapsedTime();
   // Update objects
   sphere.rotation.y = 0.2 * elapsedTime;
+  eventHorizon.rotation.z = 0.2 * elapsedTime;
   lightconeGroup.children.forEach((child, index) => {
     // TODO: Add rotation for cones see prior example
     // lightCone1.rotation.x = Math.PI * 0.5;
@@ -119,7 +134,6 @@ window.addEventListener('resize', () => {
 });
 
 // Debug
-// const gui = new dat.GUI();
 // console.log(ergosphere);
 // gui.add(ergosphere, 'geometry.position').min(0).max(5).step(0.0001).name('x');
 // // gui.add(ergosphere, 'geometry.position.y').min(0).max(5).step(0.0001).name('y');
