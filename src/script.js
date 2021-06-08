@@ -107,7 +107,6 @@ const tick = () => {
     child.position.z = spotZ;
     child.rotation.x = (Math.PI * spotX) / (-1.65 * Math.PI);
     child.rotation.z = (Math.PI * spotZ) / (-1.65 * Math.PI);
-    console.log(child.rotation);
   });
   // Update controls
   controls.update();
