@@ -38,6 +38,9 @@ const eventHorizon = new THREE.Mesh(
 );
 eventHorizon.rotation.x = Math.PI * 0.5;
 
+// Universal Axion
+
+
 // Ergosphere
 const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4'});
 const ergosphere = new THREE.Mesh( new THREE.TorusGeometry(2.75, .01, 45, 45), materialErgo);
@@ -106,8 +109,9 @@ const tick = () => {
     child.position.x = spotX;
     child.position.z = spotZ;
     // TODO: Someone who remembers geometry sort this.
-    child.rotation.x = spotX / obj.divisor;
-    child.rotation.z = spotZ / obj.divisor;
+    child.rotation.order = 'YXZ';
+    child.rotation.x = Math.PI/2;
+    child.rotation.y = 0.2 * (elapsedTime + randArr[index]) + (Math.PI / 2);
   });
   // Update controls
   controls.update();
