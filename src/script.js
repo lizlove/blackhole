@@ -99,11 +99,15 @@ const tick = () => {
   sphere.rotation.y = 0.2 * elapsedTime;
   eventHorizon.rotation.z = 0.2 * elapsedTime;
   lightconeGroup.children.forEach((child, index) => {
-    // TODO: Add rotation for cones see prior example
     // lightCone1.rotation.x = Math.PI * 0.5;
     // lightCone1.rotation.z = Math.PI * 1;
-    child.position.x = Math.sin(0.2 * (elapsedTime + randArr[index])) * 2.75;
-    child.position.z = Math.cos(0.2 * (elapsedTime + randArr[index])) * 2.75;
+    const spotX = Math.sin(0.2 * (elapsedTime + randArr[index])) * 2.75;
+    const spotZ = Math.cos(0.2 * (elapsedTime + randArr[index])) * 2.75;
+    child.position.x = spotX;
+    child.position.z = spotZ;
+    child.rotation.x = (Math.PI * spotX) / (-1.65 * Math.PI);
+    child.rotation.z = (Math.PI * spotZ) / (-1.65 * Math.PI);
+    console.log(child.rotation);
   });
   // Update controls
   controls.update();
@@ -132,9 +136,3 @@ window.addEventListener('resize', () => {
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
-
-// Debug
-// console.log(ergosphere);
-// gui.add(ergosphere, 'geometry.position').min(0).max(5).step(0.0001).name('x');
-// // gui.add(ergosphere, 'geometry.position.y').min(0).max(5).step(0.0001).name('y');
-// // gui.add(ergosphere, 'geometry.position.z').min(0).max(5).step(0.0001).name('z');
