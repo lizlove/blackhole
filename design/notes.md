@@ -75,3 +75,8 @@ We will not cover how quaternions work in this lesson but keep in mind that the 
 camera.position.z = 0;
 camera.position.y = 4;
 camera.position.x = 0; -->
+
+
+### Thanks
+- Megan Bedell for color advice
+- Robert Blackwell for Euler rotation
