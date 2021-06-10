@@ -62,6 +62,26 @@ lightConeGroup.add(lightCone3);
 // Add all objects
 scene.add(sphere, eventHorizon, ergosphere, lightConeGroup);
 
+// Background stars
+const particlesGeometry = new THREE.BufferGeometry();
+const count = 500;
+// Multiply by 3 because each position is composed of 3 values (x, y, z)
+const positions = new Float32Array(count * 3);
+// Multiply by 3 for same reason
+for (let i = 0; i < count * 3; i++) {
+  // Math.random() - 0.5 to have a random value between -0.5 and +0.5
+  positions[i] = (Math.random() - 0.5) * 10;
+}
+// Create the Three.js BufferAttribute.
+// Specify that each information is composed of 3 values
+particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const particlesMaterial = new THREE.PointsMaterial({
+  size: 0.02,
+  sizeAttenuation: true,
+});
+const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+scene.add(particles);
+
 // Ambient Light
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001);
