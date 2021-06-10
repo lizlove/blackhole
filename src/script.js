@@ -1,11 +1,11 @@
 import './style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
-// import * as dat from 'dat.gui';
+import * as dat from 'dat.gui';
 
 
 // Debug
-// const gui = new dat.GUI();
+const gui = new dat.GUI();
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
@@ -43,7 +43,7 @@ eventHorizon.rotation.x = Math.PI * 0.5;
 
 // Ergosphere
 const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4'});
-const ergosphere = new THREE.Mesh( new THREE.TorusGeometry(2.75, .01, 45, 45), materialErgo);
+const ergosphere = new THREE.Mesh( new THREE.TorusGeometry(2.75, .01, 55, 55), materialErgo);
 ergosphere.rotation.x = Math.PI * 0.5;
 
 // Lightcone Group
@@ -59,16 +59,22 @@ lightConeGroup.add(lightCone2);
 const lightCone3 = new THREE.Mesh( new THREE.ConeGeometry(.10, .35, 30), materialLightcone);
 lightConeGroup.add(lightCone3);
 
+// Add all objects
 scene.add(sphere, eventHorizon, ergosphere, lightConeGroup);
 
-// Lights
-// const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-// scene.add(ambientLight);
-// const pointLight = new THREE.PointLight(0xffffff, 0.5);
-// pointLight.position.x = 2;
-// pointLight.position.y = 3;
-// pointLight.position.z = 4;
-// scene.add(pointLight);
+// Ambient Light
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001);
+scene.add(ambientLight);
+
+// Directional Light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+directionalLight.position.set(2, 2, - 1);
+gui.add(directionalLight, 'intensity').min(0).max(1).step(0.001);
+gui.add(directionalLight.position, 'x').min(- 5).max(5).step(0.001);
+gui.add(directionalLight.position, 'y').min(- 5).max(5).step(0.001);
+gui.add(directionalLight.position, 'z').min(- 5).max(5).step(0.001);
+scene.add(directionalLight);
 
 // Sizes
 const sizes = {
@@ -97,7 +103,6 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // Animate
 const clock = new THREE.Clock();
 const randArr = ['a', 'b', 'c'].map((r) => Math.floor(Math.random() * 360));
-const obj = {divisor: 1.85};
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
   // Update objects
@@ -108,10 +113,10 @@ const tick = () => {
     const spotZ = Math.cos(0.2 * (elapsedTime + randArr[index])) * 2.75;
     child.position.x = spotX;
     child.position.z = spotZ;
-    // TODO: Someone who remembers geometry sort this.
     child.rotation.order = 'YXZ';
-    child.rotation.x = Math.PI/2;
-    child.rotation.y = 0.2 * (elapsedTime + randArr[index]) + (Math.PI / 2);
+    child.rotation.y = (0.2 * (elapsedTime + randArr[index]) + (Math.PI / 2));
+    child.rotation.x = (Math.PI/2);
+    child.rotation.z = Math.PI;
   });
   // Update controls
   controls.update();

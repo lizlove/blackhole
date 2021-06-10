@@ -55,12 +55,15 @@ We will not cover how quaternions work in this lesson but keep in mind that the 
 
 
 ## TODO:
-- Lightcone height
-- Lightcone color fade/gradient - make shaders
 - Fluid static
 - Fluid movement
+- Fluid rotation
 - Lightsaber
+- Inverse lightcone direction
+- Lightcone color fade/gradient - make shaders
+- Little stars
 - Labels
+- Light position and
 - Camera movement over time / recording
 
 
@@ -69,6 +72,7 @@ We will not cover how quaternions work in this lesson but keep in mind that the 
 - Event horizon rotation
 - Lightcones rotation direction
 - Event horizon color gradient
+- Lightcone height
 
 ## Vignette 1:
 <!-- const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
