@@ -19,22 +19,22 @@ const axesHelper = new THREE.AxesHelper(3);
 scene.add(axesHelper);
 
 // Background stars
-// const particlesGeometry = new THREE.BufferGeometry();
-// const count = 500;
-// const positions = new Float32Array(count * 3);
-// for (let i = 0; i < count * 3; i++) {
-//   positions[i] = (Math.random() - 0.5) * 10;
-// }
-// particlesGeometry.setAttribute(
-//     'position',
-//     new THREE.BufferAttribute(positions, 3),
-// );
+const particlesGeometry = new THREE.BufferGeometry();
+const count = 500;
+const positions = new Float32Array(count * 3);
+for (let i = 0; i < count * 3; i++) {
+  positions[i] = (Math.random() - 0.5) * 10;
+}
+particlesGeometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(positions, 3),
+);
 const particlesMaterial = new THREE.PointsMaterial({
   size: 0.02,
   sizeAttenuation: true,
 });
-// const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-// scene.add(particles);
+const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+scene.add(particles);
 
 // Texture
 const textureLoader = new THREE.TextureLoader();
@@ -57,6 +57,13 @@ const eventHorizon = new THREE.Mesh(
 eventHorizon.rotation.x = Math.PI * 0.5;
 
 // Universal Axion
+// const materialTest = new THREE.MeshBasicMaterial({color: '#FFFFFF'});
+// const sphereTest = new THREE.Mesh(
+//     new THREE.SphereGeometry(1, 12, 12),
+//     materialTest,
+// );
+
+// scene.add(sphereTest);
 
 
 // Ergosphere
