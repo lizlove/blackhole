@@ -61,9 +61,9 @@ We will not cover how quaternions work in this lesson but keep in mind that the 
 - Lightsaber
 - Inverse lightcone direction
 - Lightcone color fade/gradient - make shaders
-- Little stars
+- Little stars not in front of camera.
 - Labels
-- Light position and
+- Light position and shininess
 - Camera movement over time / recording
 
 
