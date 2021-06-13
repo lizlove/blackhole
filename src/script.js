@@ -1,11 +1,12 @@
 import './style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
-// import * as dat from 'dat.gui';
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+import * as dat from 'dat.gui';
 
 // Debug
-// const gui = new dat.GUI();
+const gui = new dat.GUI();
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
@@ -17,6 +18,26 @@ scene.background = new THREE.Color('#0D0E22');
 // Axis helper
 const axesHelper = new THREE.AxesHelper(3);
 scene.add(axesHelper);
+
+// Background stars
+const particlesGeometry = new THREE.BufferGeometry();
+const count = 500;
+const positions = new Float32Array(count * 3);
+for (let i = 0; i < count * 3; i++) {
+  positions[i] = (Math.random() - 0.5) * 10;
+}
+particlesGeometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(positions, 3),
+);
+const particlesMaterial = new THREE.PointsMaterial({
+  size: 0.02,
+  sizeAttenuation: true,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending,
+});
+const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+scene.add(particles);
 
 // Texture
 const textureLoader = new THREE.TextureLoader();
@@ -39,11 +60,22 @@ const eventHorizon = new THREE.Mesh(
 eventHorizon.rotation.x = Math.PI * 0.5;
 
 // Universal Axion
+const gltfLoader = new GLTFLoader();
+let mixer = null;
+gltfLoader.load(
+    '/models/UniversalAxion/universalAxion2.gltf',
+    (gltf) => {
+      scene.add(gltf.scene);
+      mixer = new THREE.AnimationMixer(gltf.scene);
+      const action = mixer.clipAction(gltf.animations[0]);
+      action.play();
+    },
+);
 
 
 // Ergosphere
 const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4'});
-const ergosphere = new THREE.Mesh( new THREE.TorusGeometry(2.75, .01, 45, 45), materialErgo);
+const ergosphere = new THREE.Mesh( new THREE.TorusGeometry(2.75, .01, 55, 55), materialErgo);
 ergosphere.rotation.x = Math.PI * 0.5;
 
 // Lightcone Group
@@ -51,24 +83,25 @@ const lightConeGroup = new THREE.Group();
 const materialLightcone = new THREE.MeshMatcapMaterial({matcap: lightConeTexture});
 
 const lightCone1 = new THREE.Mesh( new THREE.ConeGeometry(.10, .35, 30), materialLightcone);
-lightConeGroup.add(lightCone1);
-
 const lightCone2 = new THREE.Mesh( new THREE.ConeGeometry(.10, .35, 30), materialLightcone);
-lightConeGroup.add(lightCone2);
-
 const lightCone3 = new THREE.Mesh( new THREE.ConeGeometry(.10, .35, 30), materialLightcone);
-lightConeGroup.add(lightCone3);
+const lightCone4 = new THREE.Points(new THREE.ConeGeometry(.10, .35, 30), particlesMaterial);
 
+lightConeGroup.add(lightCone1, lightCone2, lightCone3, lightCone4);
+
+// Add all objects
 scene.add(sphere, eventHorizon, ergosphere, lightConeGroup);
 
-// Lights
-// const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-// scene.add(ambientLight);
-// const pointLight = new THREE.PointLight(0xffffff, 0.5);
-// pointLight.position.x = 2;
-// pointLight.position.y = 3;
-// pointLight.position.z = 4;
-// scene.add(pointLight);
+// Light
+const light1 = new THREE.PointLight( 0xff2200, 0.7 );
+light1.position.set( 100, 100, 100 );
+scene.add( light1 );
+
+const light2 = new THREE.PointLight( 0x22ff00, 0.7 );
+light2.position.set( - 100, - 100, - 100 );
+scene.add( light2 );
+
+scene.add( new THREE.AmbientLight( 0x111111 ) );
 
 // Sizes
 const sizes = {
@@ -96,10 +129,14 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Animate
 const clock = new THREE.Clock();
+let previousTime = 0;
 const randArr = ['a', 'b', 'c'].map((r) => Math.floor(Math.random() * 360));
-const obj = {divisor: 1.85};
+
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+  const deltaTime = elapsedTime - previousTime;
+  previousTime = elapsedTime;
+
   // Update objects
   sphere.rotation.y = 0.2 * elapsedTime;
   eventHorizon.rotation.z = 0.2 * elapsedTime;
@@ -108,11 +145,17 @@ const tick = () => {
     const spotZ = Math.cos(0.2 * (elapsedTime + randArr[index])) * 2.75;
     child.position.x = spotX;
     child.position.z = spotZ;
-    // TODO: Someone who remembers geometry sort this.
     child.rotation.order = 'YXZ';
-    child.rotation.x = Math.PI/2;
-    child.rotation.y = 0.2 * (elapsedTime + randArr[index]) + (Math.PI / 2);
+    child.rotation.y = (0.2 * (elapsedTime + randArr[index]) + (Math.PI / 2));
+    child.rotation.x = (Math.PI/2);
+    child.rotation.z = Math.PI;
   });
+
+  // Update UA
+  if (mixer) {
+    mixer.update(deltaTime);
+  }
+
   // Update controls
   controls.update();
 

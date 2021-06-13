@@ -35,12 +35,5 @@ npm run build
 ```
 
 
-## Next steps
-- Step three.js environment with webpack
-- Update Sketch with meeting notes
-- Build static model
-- Build rotating model
-- Build fluid
-
 
 
