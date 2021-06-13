@@ -65,7 +65,6 @@ let mixer = null;
 gltfLoader.load(
     '/models/UniversalAxion/universalAxion2.gltf',
     (gltf) => {
-      console.log(gltf);
       scene.add(gltf.scene);
       mixer = new THREE.AnimationMixer(gltf.scene);
       const action = mixer.clipAction(gltf.animations[0]);
