@@ -1,8 +1,9 @@
 import './style.css';
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
-import * as dat from 'dat.gui';
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+import * as dat from 'dat.gui';
 
 // Debug
 const gui = new dat.GUI();
@@ -32,6 +33,8 @@ particlesGeometry.setAttribute(
 const particlesMaterial = new THREE.PointsMaterial({
   size: 0.02,
   sizeAttenuation: true,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending,
 });
 const particles = new THREE.Points(particlesGeometry, particlesMaterial);
 scene.add(particles);
@@ -57,13 +60,17 @@ const eventHorizon = new THREE.Mesh(
 eventHorizon.rotation.x = Math.PI * 0.5;
 
 // Universal Axion
-// const materialTest = new THREE.MeshBasicMaterial({color: '#FFFFFF'});
-// const sphereTest = new THREE.Mesh(
-//     new THREE.SphereGeometry(1, 12, 12),
-//     materialTest,
-// );
-
-// scene.add(sphereTest);
+const gltfLoader = new GLTFLoader();
+let mixer = null;
+gltfLoader.load(
+    '/models/UniversalAxion/universalAxion2.gltf',
+    (gltf) => {
+      scene.add(gltf.scene);
+      mixer = new THREE.AnimationMixer(gltf.scene);
+      const action = mixer.clipAction(gltf.animations[0]);
+      action.play();
+    },
+);
 
 
 // Ergosphere
@@ -85,19 +92,16 @@ lightConeGroup.add(lightCone1, lightCone2, lightCone3, lightCone4);
 // Add all objects
 scene.add(sphere, eventHorizon, ergosphere, lightConeGroup);
 
-// Ambient Light
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001);
-scene.add(ambientLight);
+// Light
+const light1 = new THREE.PointLight( 0xff2200, 0.7 );
+light1.position.set( 100, 100, 100 );
+scene.add( light1 );
 
-// Directional Light
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-directionalLight.position.set(2, 2, - 1);
-gui.add(directionalLight, 'intensity').min(0).max(1).step(0.001);
-gui.add(directionalLight.position, 'x').min(- 5).max(5).step(0.001);
-gui.add(directionalLight.position, 'y').min(- 5).max(5).step(0.001);
-gui.add(directionalLight.position, 'z').min(- 5).max(5).step(0.001);
-scene.add(directionalLight);
+const light2 = new THREE.PointLight( 0x22ff00, 0.7 );
+light2.position.set( - 100, - 100, - 100 );
+scene.add( light2 );
+
+scene.add( new THREE.AmbientLight( 0x111111 ) );
 
 // Sizes
 const sizes = {
@@ -125,9 +129,14 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Animate
 const clock = new THREE.Clock();
+let previousTime = 0;
 const randArr = ['a', 'b', 'c'].map((r) => Math.floor(Math.random() * 360));
+
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+  const deltaTime = elapsedTime - previousTime;
+  previousTime = elapsedTime;
+
   // Update objects
   sphere.rotation.y = 0.2 * elapsedTime;
   eventHorizon.rotation.z = 0.2 * elapsedTime;
@@ -141,6 +150,12 @@ const tick = () => {
     child.rotation.x = (Math.PI/2);
     child.rotation.z = Math.PI;
   });
+
+  // Update UA
+  if (mixer) {
+    mixer.update(deltaTime);
+  }
+
   // Update controls
   controls.update();
 
