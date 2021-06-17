@@ -54,7 +54,7 @@
         },
         {
             "mesh" : 2,
-            "name" : "Cone.A",
+            "name" : "Cone",
             "rotation" : [
                 0.7071013450622559,
                 0.002785278717055917,
@@ -74,7 +74,7 @@
         },
         {
             "mesh" : 3,
-            "name" : "Cone.B",
+            "name" : "Coneb",
             "scale" : [
                 0.009999999776482582,
                 0.009999999776482582,
@@ -783,7 +783,7 @@
     "buffers" : [
         {
             "byteLength" : 173652,
-            "uri" : "universalAxion0.bin"
+            "uri" : "universalAxion3.bin"
         }
     ]
 }
