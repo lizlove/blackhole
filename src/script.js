@@ -20,8 +20,8 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color('#0D0E22');
 
 // Axis helper
-const axesHelper = new THREE.AxesHelper(3);
-scene.add(axesHelper);
+// const axesHelper = new THREE.AxesHelper(3);
+// scene.add(axesHelper);
 
 // Background stars
 const particlesGeometry = new THREE.BufferGeometry();
@@ -113,15 +113,18 @@ const waterMaterial = new THREE.ShaderMaterial({
   },
 });
 
-gui.add(waterMaterial.uniforms.uBigWavesElevation, 'value').min(0).max(1).step(0.001).name('uBigWavesElevation');
-gui.add(waterMaterial.uniforms.uBigWavesFrequency.value, 'x').min(0).max(10).step(0.001).name('uBigWavesFrequencyX');
-gui.add(waterMaterial.uniforms.uBigWavesFrequency.value, 'y').min(0).max(10).step(0.001).name('uBigWavesFrequencyY');
-gui.addColor(debugObject, 'depthColor').onChange(() => {
-  waterMaterial.uniforms.uDepthColor.value.set(debugObject.depthColor);
-});
-gui.addColor(debugObject, 'surfaceColor').onChange(() => {
-  waterMaterial.uniforms.uSurfaceColor.value.set(debugObject.surfaceColor);
-});
+waterMaterial.metalness = 0.45;
+waterMaterial.roughness = 0.65;
+
+// gui.add(waterMaterial.uniforms.uBigWavesElevation, 'value').min(0).max(1).step(0.001).name('uBigWavesElevation');
+// gui.add(waterMaterial.uniforms.uBigWavesFrequency.value, 'x').min(0).max(10).step(0.001).name('uBigWavesFrequencyX');
+// gui.add(waterMaterial.uniforms.uBigWavesFrequency.value, 'y').min(0).max(10).step(0.001).name('uBigWavesFrequencyY');
+// gui.addColor(debugObject, 'depthColor').onChange(() => {
+//   waterMaterial.uniforms.uDepthColor.value.set(debugObject.depthColor);
+// });
+// gui.addColor(debugObject, 'surfaceColor').onChange(() => {
+//   waterMaterial.uniforms.uSurfaceColor.value.set(debugObject.surfaceColor);
+// });
 
 // Water Test Mesh
 // const water = new THREE.Mesh(waterGeometry, waterMaterial);
@@ -166,17 +169,23 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Universal Axion
 // const bakedTexture = textureLoader.load('universalAxion1.bin');
-const bakedMaterial = new THREE.MeshBasicMaterial({color: 'green'});
+const normalMaterial = new THREE.MeshNormalMaterial();
+normalMaterial.shininess = 100;
+normalMaterial.specular = new THREE.Color(0x1188ff);
 const gltfLoader = new GLTFLoader();
 let mixer = null;
 gltfLoader.load(
-    '/models/AnimatedAxion/universalAxion1.gltf',
+    '/models/AnimatedAxion/universalAxion0.gltf',
     (gltf) => {
       console.log('🙏🏻', gltf);
       const bScene = gltf.scene || gltf.scenes[0];
       bScene.scale.set(2, 2, 2);
       bScene.traverse((child) => {
         // Add material for the light sabers and material for the sphere
+        if (child.name.includes('Cone')) {
+          console.log('cone child', child);
+          child.material = normalMaterial;
+        }
         child.material = waterMaterial;
       });
       scene.add(bScene);
