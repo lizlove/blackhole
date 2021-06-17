@@ -15,7 +15,7 @@
                     "export_image_format" : "JPEG",
                     "export_morph" : 0,
                     "export_skins" : 0,
-                    "export_texture_dir" : "",
+                    "export_texture_dir" : "textures",
                     "use_active_collection" : 1,
                     "use_mesh_edges" : 1,
                     "use_mesh_vertices" : 1,

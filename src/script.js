@@ -3,10 +3,14 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+import waterVertexShader from './shaders/water/vertex.glsl';
+import waterFragmentShader from './shaders/water/fragment.glsl';
+
 import * as dat from 'dat.gui';
 
 // Debug
 const gui = new dat.GUI();
+const debugObject = {};
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl');
@@ -45,7 +49,7 @@ const matcapTexture = textureLoader.load('/textures/matcaps/9.png');
 const lightConeTexture = textureLoader.load('/textures/matcaps/11.png');
 
 // Objects
-const materialSphere = new THREE.MeshBasicMaterial({color: 'black', wireframe: true});
+const materialSphere = new THREE.MeshBasicMaterial({color: 'black', wireframe: false});
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(1, 32, 32),
     materialSphere,
@@ -77,6 +81,53 @@ lightConeGroup.add(lightCone1, lightCone2, lightCone3, lightCone4);
 
 // Add all objects
 scene.add(sphere, eventHorizon, ergosphere, lightConeGroup);
+
+// Geometry
+const waterGeometry = new THREE.PlaneGeometry(2, 2, 512, 512);
+
+// Material
+// Steph color: B7E4F4 ... 186691
+// gl_FragColor = vec4(0.718, 0.894, 0.957, 1.0);
+// debugObject.depthColor = '#b7e4f4';
+// debugObject.surfaceColor = '#9bd8ff';
+debugObject.depthColor = '#288fcc';
+debugObject.surfaceColor = '#b7e4f4';
+
+const waterMaterial = new THREE.ShaderMaterial({
+  vertexShader: waterVertexShader,
+  fragmentShader: waterFragmentShader,
+  uniforms:
+  {
+    uTime: {value: 0},
+    uBigWavesElevation: {value: 0.193},
+    uBigWavesFrequency: {value: new THREE.Vector2(1, .375)},
+    uBigWavesSpeed: {value: 0.75},
+    uDepthColor: {value: new THREE.Color(debugObject.depthColor)},
+    uSurfaceColor: {value: new THREE.Color(debugObject.surfaceColor)},
+    uColorOffset: {value: 0.08},
+    uColorMultiplier: {value: 5},
+    uSmallWavesElevation: {value: 0.15},
+    uSmallWavesFrequency: {value: 10},
+    uSmallWavesSpeed: {value: 0.02},
+    uSmallIterations: {value: 1},
+  },
+});
+
+gui.add(waterMaterial.uniforms.uBigWavesElevation, 'value').min(0).max(1).step(0.001).name('uBigWavesElevation');
+gui.add(waterMaterial.uniforms.uBigWavesFrequency.value, 'x').min(0).max(10).step(0.001).name('uBigWavesFrequencyX');
+gui.add(waterMaterial.uniforms.uBigWavesFrequency.value, 'y').min(0).max(10).step(0.001).name('uBigWavesFrequencyY');
+gui.addColor(debugObject, 'depthColor').onChange(() => {
+  waterMaterial.uniforms.uDepthColor.value.set(debugObject.depthColor);
+});
+gui.addColor(debugObject, 'surfaceColor').onChange(() => {
+  waterMaterial.uniforms.uSurfaceColor.value.set(debugObject.surfaceColor);
+});
+
+// Water Test Mesh
+// const water = new THREE.Mesh(waterGeometry, waterMaterial);
+// water.rotation.x = - Math.PI * 0.5;
+// water.position.y = 2;
+// scene.add(water);
 
 // Light
 // const light1 = new THREE.PointLight( 0xff2200, 0.7 );
@@ -114,14 +165,20 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // Universal Axion
+// const bakedTexture = textureLoader.load('universalAxion1.bin');
+const bakedMaterial = new THREE.MeshBasicMaterial({color: 'green'});
 const gltfLoader = new GLTFLoader();
 let mixer = null;
 gltfLoader.load(
-    '/models/AnimatedAxion/universalAxion0.gltf',
+    '/models/AnimatedAxion/universalAxion1.gltf',
     (gltf) => {
       console.log('🙏🏻', gltf);
       const bScene = gltf.scene || gltf.scenes[0];
       bScene.scale.set(2, 2, 2);
+      bScene.traverse((child) => {
+        // Add material for the light sabers and material for the sphere
+        child.material = waterMaterial;
+      });
       scene.add(bScene);
       mixer = new THREE.AnimationMixer(bScene);
       gltf.animations.forEach((ani) => {
@@ -142,6 +199,7 @@ const tick = () => {
   previousTime = elapsedTime;
 
   // Update objects
+  waterMaterial.uniforms.uTime.value = elapsedTime;
   sphere.rotation.y = 0.2 * elapsedTime;
   eventHorizon.rotation.z = 0.2 * elapsedTime;
   lightConeGroup.children.forEach((child, index) => {
