@@ -45,7 +45,7 @@ const matcapTexture = textureLoader.load('/textures/matcaps/9.png');
 const lightConeTexture = textureLoader.load('/textures/matcaps/11.png');
 
 // Objects
-const materialSphere = new THREE.MeshBasicMaterial({color: 'black', wireframe: false});
+const materialSphere = new THREE.MeshBasicMaterial({color: 'black', wireframe: true});
 const sphere = new THREE.Mesh(
     new THREE.SphereGeometry(1, 32, 32),
     materialSphere,
@@ -58,20 +58,6 @@ const eventHorizon = new THREE.Mesh(
     materialEvHorz,
 );
 eventHorizon.rotation.x = Math.PI * 0.5;
-
-// Universal Axion
-const gltfLoader = new GLTFLoader();
-let mixer = null;
-gltfLoader.load(
-    '/models/UniversalAxion/universalAxion2.gltf',
-    (gltf) => {
-      scene.add(gltf.scene);
-      mixer = new THREE.AnimationMixer(gltf.scene);
-      const action = mixer.clipAction(gltf.animations[0]);
-      action.play();
-    },
-);
-
 
 // Ergosphere
 const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4'});
@@ -126,6 +112,28 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+// Universal Axion
+const gltfLoader = new GLTFLoader();
+let mixer = null;
+gltfLoader.load(
+    '/models/AnimatedAxion/universalAxion0.gltf',
+    (gltf) => {
+      console.log('🙏🏻', gltf);
+      const bScene = gltf.scene || gltf.scenes[0];
+      bScene.scale.x = 2;
+      bScene.scale.y = 2;
+      bScene.scale.z = 2;
+      scene.add(bScene);
+      mixer = new THREE.AnimationMixer(bScene);
+      gltf.animations.forEach((ani) => {
+        const action = mixer.clipAction(ani);
+        action.play();
+      });
+      // const action = mixer.clipAction(gltf.animations[0]);
+      // action.play();
+    },
+);
 
 // Animate
 const clock = new THREE.Clock();
