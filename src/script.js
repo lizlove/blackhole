@@ -58,10 +58,10 @@ const sphere = new THREE.Mesh(
 // Event Horizon with matcap
 const materialEvHorz = new THREE.MeshMatcapMaterial({matcap: matcapTexture});
 const eventHorizon = new THREE.Mesh(
-    new THREE.TorusGeometry(1.05, .05, 45, 45),
+    new THREE.TorusGeometry(1.05, .075, 45, 45),
     materialEvHorz,
 );
-eventHorizon.rotation.x = Math.PI * 0.5;
+eventHorizon.rotation.x = Math.PI * 1;
 
 // Ergosphere
 const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4'});
