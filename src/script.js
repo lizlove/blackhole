@@ -61,7 +61,7 @@ const eventHorizon = new THREE.Mesh(
     new THREE.TorusGeometry(1.05, .075, 45, 45),
     materialEvHorz,
 );
-eventHorizon.rotation.x = Math.PI * 1;
+eventHorizon.rotation.x = Math.PI * .5;
 
 // Ergosphere
 const materialErgo = new THREE.MeshBasicMaterial({color: '#6F09D4'});
