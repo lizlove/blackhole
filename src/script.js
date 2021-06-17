@@ -79,15 +79,15 @@ lightConeGroup.add(lightCone1, lightCone2, lightCone3, lightCone4);
 scene.add(sphere, eventHorizon, ergosphere, lightConeGroup);
 
 // Light
-const light1 = new THREE.PointLight( 0xff2200, 0.7 );
-light1.position.set( 100, 100, 100 );
-scene.add( light1 );
+// const light1 = new THREE.PointLight( 0xff2200, 0.7 );
+// light1.position.set( 100, 100, 100 );
+// scene.add( light1 );
 
-const light2 = new THREE.PointLight( 0x22ff00, 0.7 );
-light2.position.set( - 100, - 100, - 100 );
-scene.add( light2 );
+// const light2 = new THREE.PointLight( 0x22ff00, 0.7 );
+// light2.position.set( - 100, - 100, - 100 );
+// scene.add( light2 );
 
-scene.add( new THREE.AmbientLight( 0x111111 ) );
+scene.add( new THREE.AmbientLight( 0x111111, 1 ) );
 
 // Sizes
 const sizes = {
@@ -121,17 +121,13 @@ gltfLoader.load(
     (gltf) => {
       console.log('🙏🏻', gltf);
       const bScene = gltf.scene || gltf.scenes[0];
-      bScene.scale.x = 2;
-      bScene.scale.y = 2;
-      bScene.scale.z = 2;
+      bScene.scale.set(2, 2, 2);
       scene.add(bScene);
       mixer = new THREE.AnimationMixer(bScene);
       gltf.animations.forEach((ani) => {
         const action = mixer.clipAction(ani);
         action.play();
       });
-      // const action = mixer.clipAction(gltf.animations[0]);
-      // action.play();
     },
 );
 
