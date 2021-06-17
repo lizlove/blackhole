@@ -55,8 +55,8 @@ We will not cover how quaternions work in this lesson but keep in mind that the 
 
 
 ## TODO:
-- Fluid static
-- Fluid movement
+- Adjust fluid size, position, change color to be more white, add rotation and
+- Fix event horizon position
 - Fluid rotation
 - Lightsaber
 - Lightcone color fade/gradient - make shaders
